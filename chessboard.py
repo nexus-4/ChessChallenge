@@ -3,12 +3,12 @@ import chess
 import chess.engine
 
 class Chessboard():
-    def __init__(self, time_limit=2.0, num_threads = 5, depth_limit = 20): # 2min por jogada( tempo de reflexao)
+    def __init__(self, time_limit=2.0, num_threads = 7, depth_limit = 20): # 2min por jogada( tempo de reflexao)
         self.board = chess.Board()
         self.engine = chess.engine.SimpleEngine.popen_uci("/usr/games/stockfish")
         self.engine.configure({"Skill Level": 20, "Threads": num_threads}) #configuracoes do stockfish
-        self.time_limit = time_limit
-        self.depth_limit = depth_limit
+        self.time_limit = time_limit # tempo de reflexao
+        self.depth_limit = depth_limit # profundidade de procura
         self.board_history_svg = []
 
 
