@@ -1,43 +1,41 @@
-# Inicia o jogo
+#inicia o jogo
+import chess
+from IPython.display import SVG, clear_output
+
 if __name__ == "__main__":
     def main():
-        print("Escolha o nível de dificuldade do Stockfish:")
-        print("1. Aprendizado")
-        print("2. Iniciante")
-        print("3. Médio")
-        print("4. Difícil")
-        escolha = input("Digite o número da sua escolha (1-4): ").strip()
+        chess_board = Chessboard()
 
-        niveis = {
-            "1": 0,   # Aprendizado
-            "2": 5,   # Iniciante
-            "3": 10,  # Médio
-            "4": 20   # Difícil
-        }
+        try:
+            jogador_comeca = input("Você deseja começar? (s/n): ").strip().lower() == 's'
 
-        skill_level = niveis.get(escolha, 20)  # Default para "Difícil" se a entrada for inválida
-        time_limit = 0.1  # Ajuste o limite de tempo conforme necessário
+            while not chess_board.is_game_over():
+                clear_output(wait=True)
+                chess_board.display()
 
-        chess_board = Chessboard(skill_level, time_limit)
-        jogador_comeca = input("Você deseja começar? (s/n): ").strip().lower() == 's'
+                if jogador_comeca:
+                    jogador_move = input("Faça seu movimento: ")
+                    if not chess_board.make_move(jogador_move):
+                        print("Movimento inválido, tente novamente.")
+                        continue
+                else:
+                    print("Stockfish está fazendo um movimento...")
+                    chess_board.play_stockfish_move()
 
-        while not chess_board.is_game_over():
-            chess_board.display()
+                jogador_comeca = not jogador_comeca
 
-            if jogador_comeca:
-                jogador_move = input("Faça seu movimento: ")
-                if not chess_board.make_move(jogador_move):
-                    print("Movimento inválido, tente novamente.")
-                    continue
-            else:
-                print("Stockfish está fazendo um movimento...")
-                chess_board.play_stockfish_move()
+            # Exibe os dois últimos tabuleiros apenas se o jogo terminou
+            print("\nÚltimos dois tabuleiros antes do final:")
+            for svg_str in chess_board.board_history_svg[-2:]:
+                display(SVG(svg_str))
 
-            jogador_comeca = not jogador_comeca
+            # Obtenha um resultado preciso e informativo
+            game_result, score = chess_board.get_game_result()
+            print(f"\n{game_result}")
+            if score is not None:
+                print(f"A pontuação da posição final é: {score}")
 
-            from IPython.display import clear_output
-            clear_output(wait=True)
-
-        print(chess_board.get_winner())
+        except KeyboardInterrupt:
+            print("\nJogo interrompido pelo usuário.")
 
     main()
