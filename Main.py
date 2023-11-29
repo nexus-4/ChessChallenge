@@ -24,7 +24,11 @@ if __name__ == "__main__":
 
                 jogador_comeca = not jogador_comeca
 
-            # Exibe os dois últimos tabuleiros apenas se o jogo terminou
+            # Mostra a real ultima jogada
+            clear_output(wait=True)
+            chess_board.display()
+
+            # Exibe os dois últimos tabuleiros, alem da ultima jogada, apenas se o jogo terminou
             print("\nÚltimos dois tabuleiros antes do final:")
             for svg_str in chess_board.board_history_svg[-2:]:
                 display(SVG(svg_str))
