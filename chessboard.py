@@ -93,7 +93,6 @@ class Chessboard():
         return material_score, captured_pieces
 
     def get_winner(self):
-       def get_winner(self):
         if self.board.is_checkmate():
             return f"Xeque-mate! {'Pretas' if self.board.turn == chess.WHITE else 'Brancas'} vencem!"
         elif self.board.is_stalemate():
